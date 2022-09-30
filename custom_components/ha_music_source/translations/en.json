@@ -1,0 +1,17 @@
+{
+    "title": "音乐源",
+    "config": {
+        "abort": {
+            "single_instance_allowed": "仅允许单个配置"
+        },
+        "step": {
+            "user": {
+                "description": "全网音乐搜索，配合云音乐插件使用",
+                "data": {}
+            }
+        },
+        "error": {
+
+        }
+    }
+}
