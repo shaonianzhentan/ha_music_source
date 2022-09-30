@@ -19,12 +19,9 @@ class MusicSource():
         self.hass = hass
 
     # 搜索音乐
-    async def async_search(self, name, size=1):
+    async def async_search(self, name, target_srcs, size=1):
 
         config = {'logfilepath': 'musicdl.log', 'savedir': 'downloaded', 'search_size_per_source': size, 'proxies': {}}
-        target_srcs = [
-            'kugou', 'kuwo', 'qqmusic', 'qianqian', 'fivesing', 'migu', 'joox', 'yiting',
-        ]
         client = musicdl.musicdl(config=config)
 
         search_results = await self.hass.async_add_executor_job(client.search, name, target_srcs)
@@ -35,6 +32,7 @@ class MusicSource():
                 item = value[0]
                 if item['ext'] == 'mp3':
                     music_list.append({
+                        'id': f'{item["source"]}{item["songid"]}',
                         'song': item['songname'],
                         'singer': item['singers'],
                         'album': item['album'],
@@ -42,9 +40,17 @@ class MusicSource():
                     })
         return music_list
 
+    # 全平台搜索
+    async def async_search_all(self, name, size=1):
+        return await self.async_search(name, [
+            'kugou', 'kuwo', 'qqmusic', 'qianqian', 'fivesing', 'netease', 'migu', 'joox', 'yiting'
+        ], size)
+
     # 获取音乐链接
     async def async_song_url(self, song, singer):
-        music_list = await self.async_search(f'{song} - {singer}')
+        music_list = await self.async_search(f'{song} - {singer}', [ 
+            'kugou', 'kuwo', 'qqmusic', 'qianqian', 'fivesing', 'migu', 'joox', 'yiting' 
+        ])
         if len(music_list) > 0:
             # 精确匹配
             for item in music_list:

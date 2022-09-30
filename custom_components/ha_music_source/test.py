@@ -15,6 +15,7 @@ def search(name):
             item = value[0]
             if item['ext'] == 'mp3':
                 music_list.append({
+                    'id': f'{item["source"]}{item["songid"]}',
                     'song': item['songname'],
                     'singer': item['singers'],
                     'album': item['album'],
@@ -36,4 +37,4 @@ def song_url(song, singer):
         music = music_list[0]
         return music['url']
 
-print(song_url('爱要怎么说出口', '赵传'))
+print(song_url('你那么爱他', '李圣杰'))
