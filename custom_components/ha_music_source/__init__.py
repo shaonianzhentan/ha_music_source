@@ -32,11 +32,12 @@ class MusicSource():
                 item = value[0]
                 if item['ext'] == 'mp3':
                     music_list.append({
-                        'id': f'{item["source"]}{item["songid"]}',
+                        'id': item["songid"],
                         'song': item['songname'],
                         'singer': item['singers'],
                         'album': item['album'],
-                        'url': item['download_url']
+                        'url': item['download_url'],
+                        'source': item["source"] 
                     })
         return music_list
 
